@@ -1,10 +1,10 @@
 # fileparse.py
 #
-# Exercise 3.4
+# Exercise 3.5
 
 import csv
 
-def parse_csv(filename, select=None):
+def parse_csv(filename, select=None, types=None):
     '''
     Parse a CSV file into a list of records
     '''
@@ -29,11 +29,11 @@ def parse_csv(filename, select=None):
             # Filter the row if specific columns were selected
             if indices:
                 row = [row[index] for index in indices]
+            if types:
+                row = [func(val) for func, val in zip(types,row)]
 
             # Make a dictionary    
             record = dict(zip(headers, row))
             records.append(record)
 
     return records
-
-# Exercise 3.5
