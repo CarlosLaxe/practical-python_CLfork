@@ -1,23 +1,24 @@
-# report_with_functions.py
-# exercise 3.12
+# report.py
+# exercise 4.4
 
-import fileparse_3p10 as fp
+import fileparse_3p17 as fp
+import stock
 
 def read_portfolio(filename):
     '''
     Read a stock portfolio file into a list of dictionaries with keys
     name, shares, and price.
     '''
-    portfolio = fp.parse_csv(filename, select=['name','shares','price'], types=[str,int,float])
-    return portfolio
+    with open(filename) as lines:
+        portdicts = fp.parse_csv(lines, select=['name','shares','price'], types=[str,int,float])
+        return [stock.Stock(d['name'],d['shares'],d['price']) for d in portdicts]
 
 def read_prices(filename):
     '''
     Read a CSV file of price data into a dict mapping names to prices.
     '''
-    pricelist = fp.parse_csv(filename, types=[str,float], has_headers=False)
-    prices = dict(pricelist)
-    return prices
+    with open(filename) as lines:
+        return dict(fp.parse_csv(lines, types=[str,float], has_headers=False))
 
 def make_report_data(portfolio, prices):
     '''
@@ -26,9 +27,9 @@ def make_report_data(portfolio, prices):
     '''
     rows = []
     for stock in portfolio:
-        current_price = prices[stock['name']]
-        change        = current_price - stock['price']
-        summary       = (stock['name'], stock['shares'], current_price, change)
+        current_price = prices[stock.name]
+        change        = current_price - stock.price
+        summary       = (stock.name, stock.shares, current_price, change)
         rows.append(summary)
     return rows
 
@@ -48,4 +49,14 @@ def portfolio_report(portfolio_filename, prices_filename):
     report    = make_report_data(portfolio, prices)
     print_report(report)
 
-portfolio_report('Data/portfolio.csv', 'Data/prices.csv')
+def main(argv):
+
+    if len(argv) != 3:
+        raise SystemExit(f'Usage: {argv[0]} ''portfolio pricefile')
+    portfolio_file = argv[1]
+    prices_file = argv[2]
+    portfolio_report(portfolio_file, prices_file)
+
+if __name__ == '__main__':
+    import sys
+    main(sys.argv)
