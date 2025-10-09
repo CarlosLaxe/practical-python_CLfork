@@ -2,7 +2,7 @@
 #
 # Exercise 4.4
 
-from report_4p4 import read_portfolio
+from report import read_portfolio
 
 def portfolio_cost(filename):
     'Calculate portfolio value'

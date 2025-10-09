@@ -1,7 +1,7 @@
 # report.py
-# exercise 4.5
+# exercise 4.7
 
-import fileparse_3p17 as fp
+import fileparse as fp
 import stock
 import tableformat
 
@@ -43,7 +43,7 @@ def print_report(report, formatter):
         rowdata = [name, str(shares), f'{price:0.2f}', f'{change:0.2f}']
         formatter.row(rowdata)
 
-def portfolio_report(portfolio_filename, prices_filename):
+def portfolio_report(portfolio_filename, prices_filename, fmt='txt'):
     '''
     Make a stock report given portfolio and price data files.
     '''
@@ -53,16 +53,17 @@ def portfolio_report(portfolio_filename, prices_filename):
     # Generate the report data
     report    = make_report_data(portfolio, prices)
     # Print it out
-    formatter = tableformat.HTMLTableFormatter()
+    formatter = tableformat.create_formatter(fmt)
     print_report(report,formatter)
 
 def main(argv):
 
-    if len(argv) != 3:
-        raise SystemExit(f'Usage: {argv[0]} ''portfolio pricefile')
+    if len(argv) < 3 or len(argv) > 4:
+        raise SystemExit(f'Usage: {argv[0]} ''portfolio pricefile format(optional)')
     portfolio_file = argv[1]
     prices_file = argv[2]
-    portfolio_report(portfolio_file, prices_file)
+    fmt = argv[3] if len(argv) == 4 else 'txt'
+    portfolio_report(portfolio_file, prices_file, fmt)
 
 if __name__ == '__main__':
     import sys
