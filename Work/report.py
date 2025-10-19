@@ -6,15 +6,18 @@ from stock import Stock
 import tableformat
 from portfolio import Portfolio
 
-def read_portfolio(filename):
+def read_portfolio(filename, **opts):
     '''
     Read a stock portfolio file into a list of dictionaries with keys
     name, shares, and price.
     '''
     with open(filename) as lines:
-        portdicts = fp.parse_csv(lines, select=['name','shares','price'], types=[str,int,float])
+        portdicts = fp.parse_csv(lines, 
+                                 select=['name','shares','price'], 
+                                 types=[str,int,float],
+                                 **opts)
 
-    portfolio = [Stock(d['name'],d['shares'],d['price']) for d in portdicts]
+    portfolio = [Stock(**d) for d in portdicts]
     return Portfolio(portfolio)
 
 def read_prices(filename):
