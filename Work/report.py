@@ -12,20 +12,14 @@ def read_portfolio(filename, **opts):
     name, shares, and price.
     '''
     with open(filename) as lines:
-        portdicts = fp.parse_csv(lines, 
-                                 select=['name','shares','price'], 
-                                 types=[str,int,float],
-                                 **opts)
+        return Portfolio.from_csv(lines, **opts)
 
-    portfolio = [Stock(**d) for d in portdicts]
-    return Portfolio(portfolio)
-
-def read_prices(filename):
+def read_prices(filename, **opts):
     '''
     Read a CSV file of price data into a dict mapping names to prices.
     '''
     with open(filename) as lines:
-        return dict(fp.parse_csv(lines, types=[str,float], has_headers=False))
+        return dict(fp.parse_csv(lines, types=[str,float], has_headers=False, **opts))
 
 def make_report_data(portfolio, prices):
     '''
