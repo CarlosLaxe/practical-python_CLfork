@@ -3,7 +3,8 @@
 # Exercise 3.17
 
 import csv
-import os
+import logging
+log = logging.getLogger(__name__)
 
 def parse_csv(lines, select=None, types=None, has_headers=True,delimiter=',',silence_errors=False):
     '''
@@ -40,8 +41,8 @@ def parse_csv(lines, select=None, types=None, has_headers=True,delimiter=',',sil
                     row = [func(val) for func, val in zip(types,row)]
                 except ValueError as e:
                     if not silence_errors:
-                        print(f'Row {row_number}: Couldn\'t convert {row}')
-                        print(f'Row {row_number}: Reason {e}')
+                        log.warning("Row %d: Couldn't convert %s", row_number, row)
+                        log.debug("Row %d: Reason %s", row_number, e)
                     continue
 
             # Make a dictionary or a tuple

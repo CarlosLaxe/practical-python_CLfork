@@ -1,10 +1,10 @@
 # report.py
 # Exercise 6.2
 
-import fileparse as fp
-from stock import Stock
-import tableformat
-from portfolio import Portfolio
+from . import fileparse as fp
+from .stock import Stock
+from . import tableformat
+from .portfolio import Portfolio
 
 def read_portfolio(filename, **opts):
     '''
@@ -57,6 +57,15 @@ def portfolio_report(portfolio_filename, prices_filename, fmt='txt'):
     print_report(report,formatter)
 
 def main(argv):
+
+    # # This file sets up basic configuration of the logging module.
+    # # Change settings here to adjust logging output as needed.
+    # import logging
+    # logging.basicConfig(
+    #     filename = 'app.log',           # Name of the log file (omit to use stderr)
+    #     filemode = 'w',                 # File mode (use 'a' to append)
+    #     level    = logging.WARNING,     # Logging level (DEBUG, INFO, WARNING, ERROR or CRITICAL)
+    # )
 
     if len(argv) < 3 or len(argv) > 4:
         raise SystemExit(f'Usage: {argv[0]} ''portfolio pricefile format(optional)')
